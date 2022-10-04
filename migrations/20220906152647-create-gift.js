@@ -25,6 +25,7 @@ module.exports = {
           model: "Users",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
@@ -44,7 +45,11 @@ module.exports = {
         defaultValue: "Disponible",
       },
       reservedBy: {
-        type: Sequelize.DATE,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       reservedAt: {
         type: Sequelize.DATE,

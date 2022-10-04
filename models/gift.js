@@ -1,25 +1,45 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Gift extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+import Sequelize from "sequelize";
+import { sequelize } from "../config/config.json";
+
+const Gift = sequelize.define(
+  "Gift",
+  {
+    name: {
+      type: Sequelize.STRING,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: Sequelize.STRING,
+    },
+    link: {
+      type: Sequelize.STRING,
+    },
+    createdBy: {
+      type: Sequelize.INTEGER,
+      required: true,
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+    },
+    giftFor: {
+      type: Sequelize.INTEGER,
+      required: true,
+    },
+    status: {
+      type: Sequelize.STRING,
+      defaultValue: "Disponible",
+    },
+    reservedBy: {
+      type: Sequelize.INTEGER,
+    },
+    gifreservedAttFor: {
+      type: Sequelize.DAE,
+    },
+  },
+  {
+    timestamps: false,
   }
-  Gift.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Gift',
-  });
-  return Gift;
-};
+);
+
+export default Gift;

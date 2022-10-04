@@ -1,37 +1,16 @@
-'use strict';
+import User, { hasMany, belongsTo } from "../models/user";
+import Family, { belongsTo as _belongsTo } from "../models/family";
+import Gift, { belongsTo as __belongsTo } from "../models/gift";
+import Family_Gift from "../models/family_gift";
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
+hasMany(Gift, { onDelete: "CASCADE" });
+belongsTo(Family, { as: "User", foreignKey: "userId" });
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+_belongsTo(User, { as: "Family", foreignKey: "familyId" });
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+__belongsTo(User, { as: "Creator",foreignKey: "createdBy", onDelete: "CASCADE" });
+__belongsTo(User, { as: "For", foreignKey: "giftFor", onDelete: "CASCADE" });
+__belongsTo(User, { as: "Booker", foreignKey: "reservedBy",});
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+export default { User, Family, Gift, Family_Gift };
