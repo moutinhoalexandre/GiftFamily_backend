@@ -1,5 +1,6 @@
 import express from "express"; // Import express
 import cors from "cors"; // Import cors
+import cookieParser from "cookie-parser";
 //Importing routes
 import UserRoutes from './routes/user.js';
 import { ValidationError } from "sequelize";
@@ -8,6 +9,7 @@ const app = express(); // Instance of an application
 app.use(cors()); // Allows requests between the client and the server
 app.use(express.json()); // Transform request into Json
 app.use(express.urlencoded({ extended: false })); // Transform from request into Json
+app.use(cookieParser());
 
 //routes
 app.use('./api/user', UserRoutes)
